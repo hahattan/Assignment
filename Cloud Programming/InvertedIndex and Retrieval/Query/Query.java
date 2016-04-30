@@ -32,8 +32,7 @@ public class Query {
 	conf.set("keyword", keyword);
 	conf.set("path", args[1]);
 
-
-	// get the number of input files and <id, filename> list
+	// get the number of input files 
 	try {
 	    FileSystem fs = FileSystem.get(conf);
 	    Path path = new Path("InvertedIndex/id.log");
