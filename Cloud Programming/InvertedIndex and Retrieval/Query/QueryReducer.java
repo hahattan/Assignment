@@ -24,7 +24,7 @@ public class QueryReducer extends Reducer<QueryKeyPair,QueryValuePair,Text,Text>
 
         try {
     	    FileSystem fs = FileSystem.get(conf);
-    	    Path path = new Path("InvertedIndex/id.log");
+    	    Path path = new Path("id.log");
     	    BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(path)));
     	    String line;
     	    line = br.readLine();

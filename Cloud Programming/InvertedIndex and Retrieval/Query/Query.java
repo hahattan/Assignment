@@ -32,10 +32,11 @@ public class Query {
 	conf.set("keyword", keyword);
 	conf.set("path", args[1]);
 
-	// get the number of input files 
+
+	// get the number of input files and <id, filename> list
 	try {
 	    FileSystem fs = FileSystem.get(conf);
-	    Path path = new Path("InvertedIndex/id.log");
+	    Path path = new Path("id.log");
 	    BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(path)));
 	    String line;
 	    line = br.readLine();

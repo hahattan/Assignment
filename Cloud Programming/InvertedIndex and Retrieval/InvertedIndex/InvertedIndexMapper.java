@@ -50,17 +50,14 @@ public class InvertedIndexMapper extends Mapper<LongWritable, Text, InvertedInde
       //split on non-alphabetic characters
       String[] words = word.split("\\P{Alpha}", -1);
       for(int i = 0; i < words.length; i++) {
+	  if(words[i] != null && !words[i].isEmpty()) {
+	      term = new InvertedIndexKeyPair(new Text(words[i]), id);
+	      info = new InvertedIndexValuePair(id, new IntWritable(1), new Text(key.toString()));
 
-	    term = new InvertedIndexKeyPair(new Text(words[i]), id);
-	    info = new InvertedIndexValuePair(id, new IntWritable(1), new Text(key.toString()));
-
-	    // create <K, V> pair
-	    context.write(term, info);
+	      // create <K, V> pair
+	      context.write(term, info);
+	  }
       }
-
-
     }
-
   }
-
 }

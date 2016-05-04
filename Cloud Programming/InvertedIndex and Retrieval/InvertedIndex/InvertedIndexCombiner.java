@@ -16,8 +16,12 @@ public class InvertedIndexCombiner extends Reducer<InvertedIndexKeyPair, Inverte
     List<Integer> offset = new ArrayList<Integer>();
     for (InvertedIndexValuePair val: values) {
       //TODO: agrregate the result from mapper
-      count += 1;
-      offset.add(Integer.valueOf(val.getOffset()));
+      String temp[] = val.getOffset().split("\\p{Punct}");
+      for(int i = 0;i < temp.length; i++) {
+   	  if(temp[i].isEmpty()) continue;
+          count += 1;
+          offset.add(Integer.valueOf(temp[i]));
+      }
     }
     Collections.sort(offset);
     builder.append("[");

@@ -42,7 +42,7 @@ public class InvertedIndex {
     // write all input file names to a file to get docID
     try {
       FileSystem fs = FileSystem.get(URI.create(args[1]), conf);
-      Path file = new Path("InvertedIndex/id.log");
+      Path file = new Path("id.log");
       FileStatus[] status = fs.listStatus(new Path(args[0]));
       BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fs.create(file, true)));
       bw.write(String.valueOf(status.length));

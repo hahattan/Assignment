@@ -28,40 +28,38 @@ public class QueryMapper extends Mapper<LongWritable, Text, QueryKeyPair, QueryV
 
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 
-	String lines[] = value.toString().split("\\r?\\n");
-	for(int i = 0; i < lines.length; i++) {
-	    String info[] = lines[i].split(";");
-	    String temp[] = info[0].split("\\s");
-	    String term = temp[0];
-	    if(keyword.get(keyword.size()-1).equals("-case") == true) {
-		for(int j = 0; j < keyword.size()-1; j++) {
-		    if(keyword.get(j).length() == 0) continue;
-		    if(term.toLowerCase().equals(keyword.get(j).toLowerCase()) == true) {
-			context.getCounter(TOP10_COUNTER.FOUND).increment(1);
-			df = Double.parseDouble(temp[1]);
-			for(int k = 1; k < info.length; k++) {
-			    String doc[] = info[k].split("\\s");
-			    int docID = Integer.valueOf(doc[0]);
-			    Double tf = Double.parseDouble(doc[1]);
-			    Double weight = tf * Math.log10(N/df);
-			    context.write(new QueryKeyPair(new DoubleWritable(weight), docID), new QueryValuePair(docID, new Text(doc[2])));
-			}
+	String line = value.toString();
+	String info[] = line.split(";");
+	String temp[] = info[0].split("\\s+");
+	String term = temp[0];
+	if(keyword.get(keyword.size()-1).equals("-case") == true) {
+	    for(int j = 0; j < keyword.size()-1; j++) {
+	        if(keyword.get(j).length() == 0) continue;
+		if(term.toLowerCase().equals(keyword.get(j).toLowerCase()) == true) {
+	            context.getCounter(TOP10_COUNTER.FOUND).increment(1);
+		    df = Double.parseDouble(temp[1]);
+	            for(int k = 1; k < info.length; k++) {
+			String doc[] = info[k].split("\\s+");
+			int docID = Integer.valueOf(doc[0]);
+			Double tf = Double.parseDouble(doc[1]);
+			Double weight = tf * Math.log10(N/df);
+			context.write(new QueryKeyPair(new DoubleWritable(weight), docID), new QueryValuePair(docID, new Text(doc[2])));
 		    }
 		}
 	    }
-	    else {
-		for(int j = 0; j < keyword.size(); j++) {
-		    if(keyword.get(j).length() == 0) continue;
-		    if(term.equals(keyword.get(j)) == true) {
-			context.getCounter(TOP10_COUNTER.FOUND).increment(1);
-			df = Double.parseDouble(temp[1]);
-			for(int k = 1; k < info.length; k++) {
-			    String doc[] = info[k].split("\\s");
-			    int docID = Integer.valueOf(doc[0]);
-			    Double tf = Double.parseDouble(doc[1]);
-			    Double weight = tf * Math.log10(N/df);
-			    context.write(new QueryKeyPair(new DoubleWritable(weight), docID), new QueryValuePair(docID, new Text(doc[2])));
-			}
+	}
+	else {
+	    for(int j = 0; j < keyword.size(); j++) {
+		if(keyword.get(j).length() == 0) continue;
+		if(term.equals(keyword.get(j)) == true) {
+		    context.getCounter(TOP10_COUNTER.FOUND).increment(1);
+		    df = Double.parseDouble(temp[1]);
+		    for(int k = 1; k < info.length; k++) {
+			String doc[] = info[k].split("\\s");
+			int docID = Integer.valueOf(doc[0]);
+			Double tf = Double.parseDouble(doc[1]);
+			Double weight = tf * Math.log10(N/df);
+			context.write(new QueryKeyPair(new DoubleWritable(weight), docID), new QueryValuePair(docID, new Text(doc[2])));
 		    }
 		}
 	    }
