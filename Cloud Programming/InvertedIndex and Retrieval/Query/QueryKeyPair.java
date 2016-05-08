@@ -13,13 +13,13 @@ public class QueryKeyPair implements WritableComparable<QueryKeyPair> {
     private int docID;
 
     public QueryKeyPair() {
-	this.weight = new DoubleWritable();
+	    this.weight = new DoubleWritable();
     }
 
     public QueryKeyPair(DoubleWritable weight, int docID) {
-	//TODO: constructor
-	this.weight = weight;
-	this.docID = docID;
+	    //TODO: constructor
+	    this.weight = weight;
+	    this.docID = docID;
     }
 
     @Override

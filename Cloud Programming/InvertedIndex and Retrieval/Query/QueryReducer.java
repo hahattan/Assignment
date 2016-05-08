@@ -17,6 +17,7 @@ public class QueryReducer extends Reducer<QueryKeyPair,QueryValuePair,Text,Text>
     private Text result = new Text();
     private HashMap<Integer, String> hash = new HashMap<Integer, String>();
 
+    //build the <id, filename> table for looking up
     public void setup(Context context) throws IOException, InterruptedException {
 
         Configuration conf = context.getConfiguration();
@@ -39,16 +40,15 @@ public class QueryReducer extends Reducer<QueryKeyPair,QueryValuePair,Text,Text>
     	}
     }
 
-    public void reduce(QueryKeyPair key, Iterable<QueryValuePair> values, Context context)
-    throws IOException, InterruptedException {
+    public void reduce(QueryKeyPair key, Iterable<QueryValuePair> values, Context context)throws IOException, InterruptedException {
 
         long rk = context.getCounter(TOP10_COUNTER.RANK).getValue();
 	    for (QueryValuePair val: values) {
-		long limit = context.getCounter(TOP10_COUNTER.NUMBER).getValue();
-		if(limit >= 10) break;
+		    long limit = context.getCounter(TOP10_COUNTER.NUMBER).getValue();
+		    if(limit >= 10) break;
 
 	        StringBuilder path = new StringBuilder(context.getConfiguration().get("path"));
-	        path.append("/");
+            path.append("/");
 	        path.append(hash.get(val.getDocID()));
 
 	        StringBuilder temp = new StringBuilder();

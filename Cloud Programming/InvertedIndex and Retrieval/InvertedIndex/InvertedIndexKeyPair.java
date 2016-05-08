@@ -10,43 +10,41 @@ import org.apache.hadoop.io.WritableComparable;
 public class InvertedIndexKeyPair implements WritableComparable<InvertedIndexKeyPair> {
 
 
-  private Text term;
-  private int docID;
+    private Text term;
+    private int docID;
 
-  public InvertedIndexKeyPair() {
-    this.term = new Text();
-  }
+    public InvertedIndexKeyPair() {
+        this.term = new Text();
+    }
 
-  public InvertedIndexKeyPair(Text term, int docID) {
-    //TODO: constructor
-    this.term = term;
-    this.docID = docID;
-  }
+    public InvertedIndexKeyPair(Text term, int docID) {
+        //TODO: constructor
+        this.term = term;
+        this.docID = docID;
+    }
 
-  @Override
+    @Override
     public void write(DataOutput out) throws IOException {
-      term.write(out);
-      out.writeInt(docID);
+        term.write(out);
+        out.writeInt(docID);
     }
 
-  @Override
+    @Override
     public void readFields(DataInput in) throws IOException {
-      term.readFields(in);
-      docID = in.readInt();
+        term.readFields(in);
+        docID = in.readInt();
     }
 
-  @Override
+    @Override
     public int compareTo(InvertedIndexKeyPair o) {
-      return term.compareTo(o.term);
+        return term.compareTo(o.term);
     }
 
-  public String getTerm() {
-    return this.term.toString();
-  }
+    public String getTerm() {
+        return this.term.toString();
+    }
 
-  public int getDocID() {
-    return this.docID;
-  }
-
-
+    public int getDocID() {
+        return this.docID;
+    }
 }
