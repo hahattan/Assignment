@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  server:
+    container_name: server
+    image: local/assignment:0.0.0
+    ports:
+      - "8080:8080"
+    environment:
+      ADMIN_USERNAME: root
+      ADMIN_PASSWORD: root
+      DB_HOST: redis
+      DB_PORT: 6379
+
+  redis:
+    container_name: redis
+    image: redis:6.2.6-alpine
