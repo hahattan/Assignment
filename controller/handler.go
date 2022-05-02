@@ -10,7 +10,6 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/hahattan/assignment/application"
-	"github.com/hahattan/assignment/db/redis"
 	"github.com/hahattan/assignment/interfaces"
 )
 
@@ -20,7 +19,7 @@ type Controller struct {
 	password string
 }
 
-func NewController() *Controller {
+func NewController(client interfaces.DBClient) *Controller {
 	username := os.Getenv("ADMIN_USERNAME")
 	if username == "" {
 		username = "root"
@@ -31,14 +30,10 @@ func NewController() *Controller {
 	}
 
 	return &Controller{
-		dbClient: redis.NewClient(),
+		dbClient: client,
 		username: username,
 		password: password,
 	}
-}
-
-func Ping(w http.ResponseWriter, _ *http.Request) {
-	fmt.Fprint(w, "pong")
 }
 
 func (c *Controller) CreateToken(w http.ResponseWriter, _ *http.Request) {
@@ -49,8 +44,16 @@ func (c *Controller) CreateToken(w http.ResponseWriter, _ *http.Request) {
 		return
 	}
 
+	bytes, err := json.Marshal(token)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, err.Error())
+		return
+	}
+
 	log.Printf("token %s created", token)
-	fmt.Fprintf(w, "%s", token)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(bytes)
 }
 
 func (c *Controller) DisableToken(w http.ResponseWriter, r *http.Request) {

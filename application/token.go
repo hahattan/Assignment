@@ -10,13 +10,13 @@ import (
 	"github.com/hahattan/assignment/interfaces"
 )
 
-const timeFormat = time.RFC3339
+const TimeFormat = time.RFC3339
 
 func CreateToken(dbClient interfaces.DBClient) (string, error) {
 	rand.Seed(time.Now().UnixNano())
 	l := 6 + rand.Intn(7)
 	token := randomstring.CookieFriendlyString(l)
-	err := dbClient.AddToken(token, time.Now().Add(5*time.Minute).Format(timeFormat))
+	err := dbClient.AddToken(token, time.Now().Add(7*24*time.Hour).Format(TimeFormat))
 	if err != nil {
 		return "", err
 	}
@@ -25,7 +25,7 @@ func CreateToken(dbClient interfaces.DBClient) (string, error) {
 }
 
 func DisableToken(token string, dbClient interfaces.DBClient) error {
-	expiry := time.Time{}.Format(timeFormat)
+	expiry := time.Time{}.Format(TimeFormat)
 	return dbClient.UpdateToken(token, expiry)
 }
 
@@ -38,7 +38,7 @@ func GetAllTokens(dbClient interfaces.DBClient) (map[string]string, error) {
 	var status string
 	var expiry time.Time
 	for k, v := range res {
-		expiry, err = time.Parse(timeFormat, v)
+		expiry, err = time.Parse(TimeFormat, v)
 		if err != nil {
 			return nil, err
 		}
@@ -61,7 +61,7 @@ func ValidateToken(token string, dbClient interfaces.DBClient) error {
 		return err
 	}
 
-	expiry, err := time.Parse(timeFormat, res)
+	expiry, err := time.Parse(TimeFormat, res)
 	if err != nil {
 		return err
 	}

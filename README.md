@@ -11,7 +11,7 @@
 
 #### Installation and Execution
 ```shell
-git clone git@github.com:hahattan/assignment.git
+git clone -b PulseiD --single-branch git@github.com:hahattan/assignment.git
 cd assignment
 make build
 make run
@@ -26,7 +26,7 @@ make run
 
 #### Build and Execution
 ```shell
-git clone git@github.com:hahattan/assignment.git
+git clone -b PulseiD --single-branch git@github.com:hahattan/assignment.git
 cd assignment
 make docker
 docker-compose up -d
