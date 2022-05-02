@@ -31,3 +31,15 @@ cd assignment
 make docker
 docker-compose up -d
 ```
+
+## Usage
+
+### Admin API
+
+Default basic authentication credentials for Admin API is `root:root`.  
+Overwrite them with environment variables `ADMIN_USERNAME` and `ADMIN_PASSWORD`
+
+### Database
+
+Web server default connecting to local Redis DB (localhost:6379).  
+Overwrite the address with environment variables `DB_HOST` and `DB_PORT`
