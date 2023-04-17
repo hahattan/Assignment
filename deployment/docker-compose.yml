@@ -1,0 +1,11 @@
+services:
+  server:
+    image: grpc-server
+    container_name: grpc-server
+    hostname: grpc-server
+
+  client:
+    image: grpc-client
+    command: --addr grpc-server:50051 --number 2
+    container_name: grpc-client
+    hostname: grpc-client

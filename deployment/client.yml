@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+  labels:
+    app: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: grpc-client
+          image: grpc-client
+          imagePullPolicy: Never
+          command: ["/client", "--addr", "grpc-server:50051", "--number", "3", "--freq", "3000"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-client
+spec:
+  selector:
+    app: client
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
