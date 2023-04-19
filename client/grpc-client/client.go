@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"log"
-	"sync"
 	"time"
 
 	"google.golang.org/grpc"
@@ -16,17 +15,15 @@ import (
 type Client struct {
 	conn      *grpc.ClientConn
 	timeout   time.Duration
-	wg        *sync.WaitGroup
 	freq      time.Duration
 	ctx       context.Context
 	metricsCh chan bool
 }
 
-func NewClient(ctx context.Context, wg *sync.WaitGroup, timeout time.Duration, freq time.Duration, conn *grpc.ClientConn, metricsCh chan bool) Client {
+func NewClient(ctx context.Context, timeout time.Duration, freq time.Duration, conn *grpc.ClientConn, metricsCh chan bool) Client {
 	return Client{
 		conn:      conn,
 		timeout:   timeout,
-		wg:        wg,
 		freq:      freq,
 		ctx:       ctx,
 		metricsCh: metricsCh,
@@ -34,8 +31,6 @@ func NewClient(ctx context.Context, wg *sync.WaitGroup, timeout time.Duration, f
 }
 
 func (c Client) Run(name string) {
-	defer c.wg.Done()
-
 	client := pb.NewGreeterClient(c.conn)
 
 	ticker := time.NewTicker(c.freq)

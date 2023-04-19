@@ -72,8 +72,11 @@ func TestClient_Run(t *testing.T) {
 			ch := make(chan bool, 1)
 
 			wg.Add(1)
-			c := NewClient(ctx, wg, time.Second, time.Second, conn, ch)
-			go c.Run(tt.name)
+			c := NewClient(ctx, time.Second, time.Second, conn, ch)
+			go func() {
+				defer wg.Done()
+				c.Run(tt.name)
+			}()
 
 			res := <-ch
 			cancel()

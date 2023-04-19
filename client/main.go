@@ -65,16 +65,17 @@ func main() {
 	for i := 1; i <= *number; i++ {
 		wg.Add(1)
 		go func(i int) {
+			defer wg.Done()
+
 			// Set up a connection to the server.
 			conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 			if err != nil {
 				log.Printf("[ERROR] did not connect: %v", err)
-				wg.Done()
 				return
 			}
 			defer conn.Close()
 
-			c := client.NewClient(ctx, &wg, defaultTimeout, time.Duration(*freq)*time.Millisecond, conn, ch)
+			c := client.NewClient(ctx, defaultTimeout, time.Duration(*freq)*time.Millisecond, conn, ch)
 			c.Run(fmt.Sprintf("%s#%v", *name, i))
 		}(i)
 	}
