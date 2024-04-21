@@ -23,7 +23,7 @@ func (f *FS) CreateFile(username string, folderName string, fileName string, des
 		return nil, fmt.Errorf("%w: %s", ErrDataAlreadyExists, fileName)
 	}
 
-	if !isValidChar(fileName) {
+	if !isValidInput(fileName) {
 		return nil, ErrInvalidCharacter
 	}
 

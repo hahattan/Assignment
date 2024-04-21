@@ -18,7 +18,7 @@ func (f *FS) CreateFolder(username string, folderName string, description string
 		return nil, fmt.Errorf("%w: %s", ErrDataAlreadyExists, folderName)
 	}
 
-	if !isValidChar(folderName) {
+	if !isValidInput(folderName) {
 		return nil, ErrInvalidCharacter
 	}
 
@@ -60,7 +60,7 @@ func (f *FS) RenameFolder(username string, folderName string, newFolderName stri
 		return nil, fmt.Errorf("%w: %s", ErrDataNotFound, folderName)
 	}
 
-	if !isValidChar(newFolderName) {
+	if !isValidInput(newFolderName) {
 		return nil, ErrInvalidCharacter
 	}
 

@@ -8,7 +8,7 @@ func (f *FS) UserRegister(name string) (*User, error) {
 		return nil, fmt.Errorf("%w: %s", ErrDataAlreadyExists, name)
 	}
 
-	if !isValidChar(name) {
+	if !isValidInput(name) {
 		return nil, ErrInvalidCharacter
 	}
 

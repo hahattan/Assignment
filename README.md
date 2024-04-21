@@ -27,4 +27,12 @@ The application supports the following commands:
 - `create-file [username] [foldername] [filename] [description]?`: Create a new file in a user's folder.
 - `delete-file [username] [foldername] [filename]`: Delete a file in a user's folder.
 - `list-files [username] [foldername] [--sort-name|--sort-created]? [asc|desc]?`: List all files in a user's folder.
- 
+
+## Input Validation
+
+For all commands that require user input, the following validation rules apply:
+
+- The length of the input must be less than 20 characters.
+- The input can only contain letters (a-z, A-Z), numbers (0-9), and spaces.
+
+These rules apply to `username`, `foldername` and `filename`.
